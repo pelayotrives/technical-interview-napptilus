@@ -10,10 +10,10 @@ My name is Pelayo Trives and I am a Full Stack & Multimedia Developer focused on
 ### How to start the project
 This project has been created with Vite, a fast and agile solution for integrating React into SPA and other web applications. There are a series of scripts that will help to understand how this project works:
 
-`npm run start` - Starts the application locally
-`npm run build` - Starts the production version
-`npm run test` - Starts the tests
-`npm run lint` - Starts the linting of the project
+- `npm run start` - Starts the application locally
+- `npm run build` - Starts the production version
+- `npm run test` - Starts the tests
+- `npm run lint` - Starts the linting of the project
 
 ### Let's connect!
 
