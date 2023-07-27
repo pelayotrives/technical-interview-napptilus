@@ -1,0 +1,14 @@
+.bc-active {
+    color: #d59eff;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.bc-not-active {
+    color: #cccccc;
+}
+
+.bc-arrow {
+    margin-left: 10px;
+    margin-right: 10px;
+}
