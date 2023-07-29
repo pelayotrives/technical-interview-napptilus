@@ -1,0 +1,11 @@
+.search-bar {
+    display: flex;
+    justify-content: flex-end;
+    margin: 50px 0;
+}
+
+input[type="text"] {
+    padding: 1em;
+    border-radius: .25em;
+    min-width: 200px;
+}
