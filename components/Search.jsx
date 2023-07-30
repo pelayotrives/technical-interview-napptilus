@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import PropTypes from "prop-types";
 import "../styles/components/search.css";
 
 export default function Search({ onSearch }) {
@@ -15,10 +16,14 @@ export default function Search({ onSearch }) {
     <div className="search-bar">
       <input
         type="text"
-        placeholder="Search"
+        placeholder="Search (brand or model)"
         value={searchTerm}
         onChange={handleChange}
       />
     </div>
   );
 }
+
+Search.propTypes = {
+  onSearch: PropTypes.func.isRequired,
+};

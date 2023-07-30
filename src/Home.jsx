@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
@@ -14,6 +14,9 @@ export default function Home() {
       const endpoint = `https://itx-frontend-test.onrender.com/api/product`;
       let response = await axios.get(endpoint);
       setProducts(response.data);
+      response.data.forEach(product => {
+        localStorage.setItem(product.id, product.model);
+      });
       console.log(response.data);
     } catch (error) {
       console.log("There was an error:", error);
@@ -39,7 +42,7 @@ export default function Home() {
             {filteredProducts.map((product, index) => {
               return (
                 <article key={index} className="product-card">
-                  <Link key={product.id}>
+                  <Link key={product.id} to={`/${product.id}`}>
                     <div className="product-padding">
                       <div className="product-card-image">
                         <img src={product.imgUrl} alt="Product" />
@@ -47,7 +50,7 @@ export default function Home() {
                       <div className="product-card-text">
                         <p>{product.brand}</p>
                         <h3>{product.model}</h3>
-                        <p>{product.price ? product.price + " €" : "N/A"}</p>
+                        <p>{product.price ? product.price + " €" : "-"}</p>
                       </div>
                     </div>
                   </Link>

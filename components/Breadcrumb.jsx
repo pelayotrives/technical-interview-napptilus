@@ -2,12 +2,17 @@ import { Link, useLocation } from "react-router-dom";
 import useBreadcrumbs from "use-react-router-breadcrumbs";
 import "../styles/components/breadcrumb.css";
 
-const routes = [
-  { path: "/", breadcrumb: "Home" },
-  { path: "/Test", breadcrumb: "Test" },
-];
 export default function Breadcrumb() {
   const location = useLocation();
+  
+  const productId = location.pathname.split('/')[1];
+  const productName = localStorage.getItem(productId);
+
+  const routes = [
+    { path: "/", breadcrumb: "Home" },
+    { path: `/${productId}`, breadcrumb: productName || 'Product' },
+  ];
+
   const breadcrumbs = useBreadcrumbs(routes);
   console.log(breadcrumbs);
 

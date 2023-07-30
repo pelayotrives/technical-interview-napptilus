@@ -1,3 +1,4 @@
+/* Input */
 .search-bar {
     display: flex;
     justify-content: flex-end;
@@ -8,4 +9,11 @@ input[type="text"] {
     padding: 1em;
     border-radius: .25em;
     min-width: 200px;
+}
+
+/* Media Queries */
+@media (max-width: 650px) {
+    .search-bar {
+        justify-content: center;
+    }
 }
