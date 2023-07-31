@@ -7,6 +7,13 @@ import "../styles/pages/product-details.css";
 export default function ProductDetails() {
   const { product_id } = useParams();
   const [productDetails, setProductDetails] = useState([]);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedStorage, setSelectedStorage] = useState(null);
+  const [basketCount, setBasketCount] = useState(localStorage.getItem("basketCount") || 0);
+
+  console.log(product_id)
+  console.log(selectedColor);
+  console.log(selectedStorage);
 
   const obtainProductDetails = async () => {
     try {
@@ -14,6 +21,31 @@ export default function ProductDetails() {
       let response = await axios.get(endpoint);
       setProductDetails(response.data);
       console.log(response.data);
+
+      if (response.data.options?.colors?.length >= 1) {
+        setSelectedColor(response.data.options.colors[0].code);
+      }
+
+      if (response.data.options?.storages?.length >= 1) {
+        setSelectedStorage(response.data.options.storages[0].code);
+      }
+    } catch (error) {
+      console.log("There was an error:", error);
+    }
+  };
+
+  const handleAddProduct = async () => {
+    try {
+      const endpoint = `https://itx-frontend-test.onrender.com/api/cart`;
+      const data = {
+        id: product_id,
+        colorCode: selectedColor,
+        storageCode: selectedStorage,
+      };
+      let response = await axios.post(endpoint, data);
+      setBasketCount(response.data);
+      console.log(response.data);
+      localStorage.setItem("basketCount", response.data);
     } catch (error) {
       console.log("There was an error:", error);
     }
@@ -118,28 +150,29 @@ export default function ProductDetails() {
             <div className="product-detail-product-actions">
               <div className="color-action">
                 <label htmlFor="color">Color: </label>
-                <select name="colors" id="select-colors">
-                  {productDetails.colors?.map((color, index) => {
+                <select name="color" id="select-colors" onChange={(e) => setSelectedColor(e.target.value)}>
+                  {productDetails.options?.colors?.map((colorOption, index) => {
                     return (
-                      <option key={index} value={color}>
-                        {color}
+                      <option key={index} value={colorOption.code}>
+                        {colorOption.name}
                       </option>
                     );
                   })}
                 </select>
               </div>
               <div className="storage-action">
-                <label htmlFor="color">Storage: </label>
-                <select name="colors" id="select-colors">
-                  {productDetails.internalMemory?.map((color, index) => {
+                <label htmlFor="storage">Storage: </label>
+                <select name="storage" id="select-storage" onChange={(e) => setSelectedStorage(e.target.value)}>
+                  {productDetails.options?.storages?.map((storagesOption, index) => {
                     return (
-                      <option key={index} value={color}>
-                        {color}
+                      <option key={index} value={storagesOption.code}>
+                        {storagesOption.name}
                       </option>
                     );
                   })}
                 </select>
               </div>
+              <button onClick={handleAddProduct}>Add product</button>
             </div>
           </div>
         </div>
