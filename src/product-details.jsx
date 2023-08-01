@@ -6,12 +6,12 @@ import { BasketContext } from "../components/BasketContext";
 import "../styles/pages/product-details.css";
 export default function ProductDetails() {
   const { product_id } = useParams();
-  const [productDetails, setProductDetails] = useState([]);
+  const [productDetails, setProductDetails] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedStorage, setSelectedStorage] = useState(null);
 
   /**
-   * Function: Yes
+   * 
    */
   const checkBasket = () => {
     if (!localStorage.getItem("basketCount")) {
@@ -21,7 +21,7 @@ export default function ProductDetails() {
     let oneHourLater;
     if (dateLocal) {
       const savedDate = new Date(dateLocal);
-      oneHourLater = new Date(savedDate.getTime() + 60 * 60 * 1000);
+      oneHourLater = new Date(savedDate.getTime() + 5 * 1000);
     }
     if (new Date() > oneHourLater) {
       localStorage.setItem("basketCount", 0);
@@ -91,7 +91,7 @@ export default function ProductDetails() {
 
   return (
     <div className="product-detail">
-      {productDetails ? (
+      {productDetails !== null ? (
         <div className="product-detail-container">
           <div className="product-detail-image">
             <img src={productDetails.imgUrl} alt={productDetails.model} />
