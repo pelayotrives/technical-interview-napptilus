@@ -14,10 +14,6 @@ export default function Home() {
       const endpoint = `https://itx-frontend-test.onrender.com/api/product`;
       let response = await axios.get(endpoint);
       setProducts(response.data);
-      // response.data.forEach(product => {
-      //   localStorage.setItem(product.id, product.model);
-      // });
-      console.log(response.data);
     } catch (error) {
       console.log("There was an error:", error);
     }

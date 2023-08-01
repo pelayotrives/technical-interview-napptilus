@@ -1,11 +1,13 @@
-import React from "react";
+import { useContext } from 'react';
 import { Link } from "react-router-dom";
+import { BasketContext } from "./BasketContext";
 import napptilusLogo from "/logo-napptilus.png";
 
 import "../styles/components/header.css";
 import Breadcrumb from "./Breadcrumb";
 
 export default function header() {
+  const { basket } = useContext(BasketContext);
   return (
     <>
       <section className="header">
@@ -19,7 +21,9 @@ export default function header() {
           </Link>
           <Breadcrumb />
         </div>
-        <nav className="second-column"></nav>
+        <div className="second-column">
+          <p>Items in basket: <span className='basket-elements'>{basket}</span></p>
+        </div>
       </section>
     </>
   );

@@ -3,6 +3,12 @@
     background-color: #171717;
     padding: 30px;
     box-shadow: 0px 0px 10px 0px #0b0b0b;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 .header img {
@@ -14,4 +20,20 @@
     display: flex;
     align-items: center;
     gap: 25px;
+}
+
+.basket-elements {
+    font-weight: 700;
+}
+
+@media (max-width: 485px) {
+    .header {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .first-column {
+        flex-direction: column;
+        gap: 15px;
+    }
 }

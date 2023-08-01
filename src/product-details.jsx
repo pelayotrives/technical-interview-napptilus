@@ -1,27 +1,42 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Loader from "../components/Loader";
+import { BasketContext } from "../components/BasketContext";
 import "../styles/pages/product-details.css";
-
 export default function ProductDetails() {
   const { product_id } = useParams();
   const [productDetails, setProductDetails] = useState([]);
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedStorage, setSelectedStorage] = useState(null);
-  const [basketCount, setBasketCount] = useState(0);
 
-  console.log(product_id);
-  console.log(selectedColor);
-  console.log(selectedStorage);
+  /**
+   * Function: Yes
+   */
+  const checkBasket = () => {
+    if (!localStorage.getItem("basketCount")) {
+      localStorage.setItem("basketCount", 0);
+    }
+    const dateLocal = localStorage.getItem("basketDate");
+    let oneHourLater;
+    if (dateLocal) {
+      const savedDate = new Date(dateLocal);
+      oneHourLater = new Date(savedDate.getTime() + 60 * 60 * 1000);
+    }
+    if (new Date() > oneHourLater) {
+      localStorage.setItem("basketCount", 0);
+      localStorage.removeItem("basketDate");
+    }
+  }
 
+  /**
+   * 
+   */
   const obtainProductDetails = async () => {
     try {
       const endpoint = `https://itx-frontend-test.onrender.com/api/product/${product_id}`;
       let response = await axios.get(endpoint);
       setProductDetails(response.data);
-      console.log(response.data);
-
       if (response.data.options?.colors?.length >= 1) {
         setSelectedColor(response.data.options.colors[0].code);
       }
@@ -34,6 +49,12 @@ export default function ProductDetails() {
     }
   };
 
+  const { setBasket } = useContext(BasketContext);
+
+
+  /**
+   * 
+   */
   const handleAddProduct = async () => {
     try {
       const endpoint = `https://itx-frontend-test.onrender.com/api/cart`;
@@ -43,16 +64,29 @@ export default function ProductDetails() {
         storageCode: selectedStorage,
       };
       let response = await axios.post(endpoint, data);
-      setBasketCount(prev => prev + 1);
-      console.log(basketCount);
-      console.log (response)
+      const dateLocal = localStorage.getItem("basketDate");
+      let oneHourLater;
+      if (dateLocal) {
+        const savedDate = new Date(dateLocal);
+        oneHourLater = new Date(savedDate.getTime() + 60 * 60 * 1000);
+      }
+      if (new Date() > oneHourLater) {
+        localStorage.setItem("basketCount", 0);
+        localStorage.removeItem("basketDate");
+      } else {
+        let basketCountLS = Number(localStorage.getItem("basketCount")) + 1;
+        localStorage.setItem("basketCount", basketCountLS);
+        setBasket(basketCountLS);
+        localStorage.setItem("basketDate", String(new Date()));
+      }
     } catch (error) {
       console.log("There was an error:", error);
     }
-  }; 
+  };
 
   useEffect(() => {
     obtainProductDetails();
+    checkBasket();
   }, [product_id]);
 
   return (
@@ -150,11 +184,7 @@ export default function ProductDetails() {
             <div className="product-detail-product-actions">
               <div className="color-action">
                 <label htmlFor="color">Color: </label>
-                <select
-                  name="color"
-                  id="select-colors"
-                  onChange={(e) => setSelectedColor(e.target.value)}
-                >
+                <select name="color" id="select-colors" onChange={(e) => setSelectedColor(e.target.value)}>
                   {productDetails.options?.colors?.map((colorOption, index) => {
                     return (
                       <option key={index} value={colorOption.code}>
@@ -166,20 +196,14 @@ export default function ProductDetails() {
               </div>
               <div className="storage-action">
                 <label htmlFor="storage">Storage: </label>
-                <select
-                  name="storage"
-                  id="select-storage"
-                  onChange={(e) => setSelectedStorage(e.target.value)}
-                >
-                  {productDetails.options?.storages?.map(
-                    (storagesOption, index) => {
-                      return (
-                        <option key={index} value={storagesOption.code}>
-                          {storagesOption.name}
-                        </option>
-                      );
-                    }
-                  )}
+                <select name="storage" id="select-storage" onChange={(e) => setSelectedStorage(e.target.value)}>
+                  {productDetails.options?.storages?.map((storagesOption, index) => {
+                    return (
+                      <option key={index} value={storagesOption.code}>
+                        {storagesOption.name}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
               <button onClick={handleAddProduct}>Add product</button>

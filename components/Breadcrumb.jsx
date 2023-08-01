@@ -14,7 +14,6 @@ export default function Breadcrumb() {
   ];
 
   const breadcrumbs = useBreadcrumbs(routes);
-  console.log(breadcrumbs);
 
   return (
     <nav>
