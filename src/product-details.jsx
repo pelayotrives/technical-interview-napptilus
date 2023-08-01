@@ -43,24 +43,13 @@ export default function ProductDetails() {
         storageCode: selectedStorage,
       };
       let response = await axios.post(endpoint, data);
-
-      /* let currentCount = localStorage.getItem("basketCount");
-       if (!currentCount) {
-        currentCount = 0;
-      }
-      currentCount++;
-      setBasketCount(currentCount);
-      localStorage.setItem("basketCount", currentCount);
-      setTimeout(() => {
-        localStorage.removeItem("basketCount");
-        setBasketCount(0);
-      }, 60 * 60 * 1000); */
-
+      setBasketCount(prev => prev + 1);
       console.log(basketCount);
+      console.log (response)
     } catch (error) {
       console.log("There was an error:", error);
     }
-  };
+  }; 
 
   useEffect(() => {
     obtainProductDetails();
