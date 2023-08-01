@@ -9,9 +9,9 @@ export default function ProductDetails() {
   const [productDetails, setProductDetails] = useState([]);
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedStorage, setSelectedStorage] = useState(null);
-  const [basketCount, setBasketCount] = useState(localStorage.getItem("basketCount") || 0);
+  const [basketCount, setBasketCount] = useState(0);
 
-  console.log(product_id)
+  console.log(product_id);
   console.log(selectedColor);
   console.log(selectedStorage);
 
@@ -43,9 +43,20 @@ export default function ProductDetails() {
         storageCode: selectedStorage,
       };
       let response = await axios.post(endpoint, data);
-      setBasketCount(response.data);
-      console.log(response.data);
-      localStorage.setItem("basketCount", response.data);
+
+      /* let currentCount = localStorage.getItem("basketCount");
+       if (!currentCount) {
+        currentCount = 0;
+      }
+      currentCount++;
+      setBasketCount(currentCount);
+      localStorage.setItem("basketCount", currentCount);
+      setTimeout(() => {
+        localStorage.removeItem("basketCount");
+        setBasketCount(0);
+      }, 60 * 60 * 1000); */
+
+      console.log(basketCount);
     } catch (error) {
       console.log("There was an error:", error);
     }
@@ -150,7 +161,11 @@ export default function ProductDetails() {
             <div className="product-detail-product-actions">
               <div className="color-action">
                 <label htmlFor="color">Color: </label>
-                <select name="color" id="select-colors" onChange={(e) => setSelectedColor(e.target.value)}>
+                <select
+                  name="color"
+                  id="select-colors"
+                  onChange={(e) => setSelectedColor(e.target.value)}
+                >
                   {productDetails.options?.colors?.map((colorOption, index) => {
                     return (
                       <option key={index} value={colorOption.code}>
@@ -162,14 +177,20 @@ export default function ProductDetails() {
               </div>
               <div className="storage-action">
                 <label htmlFor="storage">Storage: </label>
-                <select name="storage" id="select-storage" onChange={(e) => setSelectedStorage(e.target.value)}>
-                  {productDetails.options?.storages?.map((storagesOption, index) => {
-                    return (
-                      <option key={index} value={storagesOption.code}>
-                        {storagesOption.name}
-                      </option>
-                    );
-                  })}
+                <select
+                  name="storage"
+                  id="select-storage"
+                  onChange={(e) => setSelectedStorage(e.target.value)}
+                >
+                  {productDetails.options?.storages?.map(
+                    (storagesOption, index) => {
+                      return (
+                        <option key={index} value={storagesOption.code}>
+                          {storagesOption.name}
+                        </option>
+                      );
+                    }
+                  )}
                 </select>
               </div>
               <button onClick={handleAddProduct}>Add product</button>

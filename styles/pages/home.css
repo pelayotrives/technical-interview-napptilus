@@ -9,6 +9,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 7em;
+  margin-bottom: 75px;
 }
 
 .product-padding {
@@ -36,6 +37,10 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
+}
+
+.product-card-text h3 {
+  line-height: 25px;
 }
 
 .product-card-text p {
