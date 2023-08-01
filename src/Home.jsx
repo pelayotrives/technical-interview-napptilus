@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
 import Search from "../components/Search";
-import "../styles/pages/Home.css";
+import "../styles/pages/home.css";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
